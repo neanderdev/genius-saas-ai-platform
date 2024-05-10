@@ -4,6 +4,7 @@ import { Code, ImageIcon, LayoutDashboard, MessageSquare, Music, Settings, Video
 import { Montserrat } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
@@ -57,6 +58,8 @@ const routes = [
 ];
 
 export default function Sidebar() {
+    const pathname = usePathname();
+
     return (
         <div className="space-y-4 py-4 flex flex-col h-full bg-[#111827] text-white">
             <div className="px-3 py-2 flex-1">
@@ -79,7 +82,10 @@ export default function Sidebar() {
                         <Link
                             key={index}
                             href={route.href}
-                            className="text-sm font-medium group p-3 w-full flex justify-start cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition"
+                            className={cn(
+                                "text-sm font-medium group p-3 w-full flex justify-start cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition",
+                                pathname === route.href ? "text-white bg-white/10" : "text-zinc-400"
+                            )}
                         >
                             <div className="flex items-center flex-1">
                                 <route.icon
