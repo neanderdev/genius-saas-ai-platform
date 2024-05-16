@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import OpenAI from "openai";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import * as z from "zod";
 
 import BotAvatar from "@/components/bot-avatar";
@@ -56,6 +57,8 @@ export default function ConversationPage() {
         } catch (error: any) {
             if (error?.response?.status === 403) {
                 proModal.onOpen();
+            } else {
+                toast.error("Something went wrong");
             }
         } finally {
             router.refresh();
