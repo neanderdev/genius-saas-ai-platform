@@ -18,9 +18,12 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+import { useProModal } from "@/hooks/use-pro-modal";
+
 import { amountOptions, formSchema, resolutionOptions } from "./constants";
 
 export default function ImagePage() {
+    const proModal = useProModal();
     const router = useRouter();
     const [images, setImages] = useState<string[]>([]);
 
@@ -47,8 +50,9 @@ export default function ImagePage() {
 
             reset();
         } catch (error: any) {
-            // TODO: Open Pro Model
-            console.log(error);
+            if (error?.response?.status === 403) {
+                proModal.onOpen();
+            }
         } finally {
             router.refresh();
         }

@@ -18,11 +18,14 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import UserAvatar from "@/components/user-avatar";
 
+import { useProModal } from "@/hooks/use-pro-modal";
+
 import { cn } from "@/lib/utils";
 
 import { formSchema } from "./constants";
 
 export default function ConversationPage() {
+    const proModal = useProModal();
     const router = useRouter();
     const [messages, setMessages] = useState<OpenAI.Chat.Completions.ChatCompletionMessageParam[]>([]);
 
@@ -51,8 +54,9 @@ export default function ConversationPage() {
 
             reset();
         } catch (error: any) {
-            // TODO: Open Pro Model
-            console.log(error);
+            if (error?.response?.status === 403) {
+                proModal.onOpen();
+            }
         } finally {
             router.refresh();
         }

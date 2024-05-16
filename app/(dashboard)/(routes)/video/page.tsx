@@ -15,9 +15,12 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+import { useProModal } from "@/hooks/use-pro-modal";
+
 import { formSchema } from "./constants";
 
 export default function VideoPage() {
+    const proModal = useProModal();
     const router = useRouter();
     const [video, setVideo] = useState<string>();
 
@@ -40,8 +43,9 @@ export default function VideoPage() {
 
             reset();
         } catch (error: any) {
-            // TODO: Open Pro Model
-            console.log(error);
+            if (error?.response?.status === 403) {
+                proModal.onOpen();
+            }
         } finally {
             router.refresh();
         }
